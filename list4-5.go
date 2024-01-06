@@ -4,6 +4,7 @@ import (
 	"strconv"
 
 	"fyne.io/fyne/app"
+	"fyne.io/fyne/theme"
 	"fyne.io/fyne/widget"
 )
 
@@ -22,7 +23,7 @@ func main() {
 			}),
 		),
 	)
-	//	a.Settings().SetTheme(theme.LightTheme())
+	a.Settings().SetTheme(theme.DarkTheme())
 	w.ShowAndRun()
 }
 
