@@ -1,9 +1,26 @@
+//main.go
+
 package main
 
 import (
-	"github.com/google/go-github/v58/github"
+	"fmt"
+	"os"
+
+	"github.com/joho/godotenv"
 )
 
 func main() {
-	client := github.NewClient(nil)
+	var grassURL string = loadEnvURL()
+}
+
+func loadEnvURL() string {
+	err := godotenv.Load(".env")
+
+	if err != nil {
+		fmt.Printf(".envの読み込みに失敗しました: %v", err)
+	}
+
+	url := os.Getenv(("GrassURL"))
+
+	return url
 }
