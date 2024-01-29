@@ -1,26 +1,35 @@
-//main.go
-
 package main
 
 import (
 	"fmt"
-	"os"
-
-	"github.com/joho/godotenv"
+	"io/ioutil"
+	"net/http"
 )
 
 func main() {
-	var grassURL string = loadEnvURL()
-}
+	url := "https://github.com/yamasei2112/test/contributors"
+	method := "GET"
 
-func loadEnvURL() string {
-	err := godotenv.Load(".env")
+	client := &http.Client{}
+	req, err := http.NewRequest(method, url, nil)
 
 	if err != nil {
-		fmt.Printf(".envの読み込みに失敗しました: %v", err)
+		fmt.Println(err)
+		return
 	}
+	req.Header.Add("Authorization", "token YOUR_ACCESS_TOKEN")
 
-	url := os.Getenv(("GrassURL"))
+	res, err := client.Do(req)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	defer res.Body.Close()
 
-	return url
+	body, err := ioutil.ReadAll(res.Body)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	fmt.Println(string(body))
 }
