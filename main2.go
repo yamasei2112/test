@@ -15,7 +15,7 @@ type Repository struct {
 }
 
 func main() {
-	username := "yamasei2112"
+	username := "aaaa"
 
 	user, err := getUserInfo(username)
 	if err != nil {
