@@ -5,7 +5,11 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"log"
 	"net/http"
+	"os"
+
+	"github.com/joho/godotenv"
 )
 
 func main() {
@@ -14,10 +18,20 @@ func main() {
 		panic(err)
 	}
 
+	err := godotenv.Load()
+	if err != nil {
+		log.Fatal("Error loading .env file")
+	}
+
+	accessToken := os.Getenv("GITHUB_TOKEN") // 環境変数からアクセストークンを取得
+	if accessToken == "" {
+		panic("GITHUB_TOKEN is not set")
+	}
+
 	var graphqlQuery = map[string]interface{}{
 		"query": string(query),
 		"variables": map[string]string{
-			"username": "yamasei2112", // GitHubのユーザー名を設定
+			"username": "yamasei2112",
 		},
 	}
 
@@ -32,7 +46,7 @@ func main() {
 		panic(err)
 	}
 
-	req.Header.Add("Authorization", "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")
+	req.Header.Add("Authorization", "bearer "+accessToken)
 	req.Header.Add("Content-Type", "application/json")
 
 	resp, err := client.Do(req)
